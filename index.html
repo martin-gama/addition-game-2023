@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<!-- commenting stuff for anson to read -->
+<!-- think of the head as the higher priority storage for elements that don't actually show up physically on the actual webpage  -->
+<head>
+	<!-- the titele is to show up on the tab in browser (will nto show up on actual webpage) -->
+    <title>Addition Game | 2023</title>
+    <!-- this meta tag apparently makes it so it is easier to view on mobile (usually works or doesn't affect it anyway) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- the <style></style> is to encapsulate all of the CSS, which is web styling -->
+	<style>
+		body{
+			font-family: Tahoma;
+			background-color: azure;
+		}
+		
+		/* Master Div used to Center Stuff Really lol */
+		.masterDiv {
+			display: flex; 
+			flex-direction: column; 
+			align-items: center; 
+			justify-content: center;
+		}
+
+		.startContainer{
+			display: flex; 
+			flex-direction: column; 
+			/* align-items: center;  */
+			/* justify-content: center; */
+		}
+		.nameContainer{
+			display: flex; 
+			flex-direction: row; 
+			align-items:baseline; 
+			justify-content: center;
+		}
+		.buttonsContainer{
+			display: flex; 
+			flex-direction: row; 
+			align-items:baseline; 
+			justify-content: center;
+		}
+
+		/* Title Heading */
+		.titleHeading {
+		font-size: 3rem;
+		text-align: center;
+		}
+
+		/* Title Caption */
+		.titleCaption {
+		font-size: 1.2rem;
+		text-align: center;
+		}
+
+		.nameParagraph{
+			font-size: 1.2rem;
+			text-align: center;
+			padding-right: 2%;
+
+		}
+		/* Name Input Box */
+		.nameInputBox {
+		font-size: 1.2rem;
+		width: 25%;
+		margin-bottom: 20px;
+		padding: 10px;
+		text-align: center;
+		box-sizing: border-box;
+		}
+
+		/* Question Paragraph */
+		.questionParagraph {
+		font-size: 4.5rem;
+		text-align: center;
+		}
+
+		/* Input Answer Box */
+		.inputAnswerBox {
+		font-size: 1.2rem;
+		width: 25%;
+		margin-bottom: 20px;
+		padding: 10px;
+		text-align: center;
+		box-sizing: border-box;
+		}
+
+		/* Check Answer Button */
+		.checkAnswerButton {
+		font-size: 1.2rem;
+		display: block;
+		margin: 0 auto;
+		padding: 10px 20px;
+		}
+
+		/* Start Button */
+		.startButton {
+		font-size: 1.2rem;
+		display: block;
+		margin-left: 2%;
+		padding: 10px 20px;
+		}
+		
+		/* Restart Button */
+		.restartButton {
+		font-size: 1.2rem;
+		display: block;
+		margin-right: 2%;
+		padding: 10px 20px;
+		}
+		
+		.downloadData {
+		font-size: 1.2rem;
+		display: block;
+		margin-left: 2%;
+		padding: 10px 20px;
+		}
+
+		/* Result Paragraph */
+		.resultParagaph {
+		font-size: 1.2rem;
+		text-align: center;
+		margin-top: 20px;
+		}
+
+		.answerOutputTable {
+		border-collapse: collapse;
+		width: 100%;
+		display: flex; 
+			flex-direction: column; 
+			align-items: center; 
+			justify-content: center;
+		padding-top: 10%;
+		}
+
+		.answerOutputTableRowParent {
+		background-color: #f2f2f2;
+		font-weight: bold;
+		}
+
+		.questionCellOutput, .answerCellOutput, .resultCellOutput, .timeCellOutput {
+		text-align: center;
+		padding: 8px;
+		border: 1px solid #ddd;
+		}
+
+		.questionCellOutput {
+		font-weight: bold;
+		}
+
+		.resultCellOutput {
+		color: rgb(0, 0, 0);
+		}
+
+		.timeCellOutput {
+		font-style: normal;
+		}
+		
+		.footerCaption {
+		font-size: 1.1rem;
+		text-align: center;
+		padding-top: 2.5%;
+		}
+
+		@media screen and (max-width: 600px) {
+		.answerOutputTable, .answerOutputTableRowParent, .questionCellOutput, .answerCellOutput, .resultCellOutput, .timeCellOutput {
+			display: block;
+		}
+		
+		.answerOutputTableRowParent {
+			padding: 0;
+		}
+		
+		.questionCellOutput, .answerCellOutput, .resultCellOutput, .timeCellOutput {
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid #ddd;
+			position: relative;
+			padding-left: 50%;
+			text-align: left;
+		}
+		
+		.questionCellOutput:before, .answerCellOutput:before, .resultCellOutput:before, .timeCellOutput:before {
+			position: absolute;
+			left: 6px;
+			content: attr(data-label);
+			text-align: left;
+			font-weight: bold;
+		}
+		}
+	</style>
+</head>
+<body>
+	<div class="masterDiv">
+    <!-- INTRODUCTORY ELEMENTS, LIKE TITLE AND DESCRIPTION -->
+	<h1 class="titleHeading">The Addition Game!</h1>
+	<p class="titleCaption" id="caption-paragraph">Hi! Please enter your first and last name. Click start when you're ready!</p>
+    <!-- NAME INPUT TEXT BOX -->
+    <p class="questionParagraph" id="question"></p>
+	
+	<div class="startContainer">
+		<div class="nameContainer">
+			<p class="nameParagraph" id="name-paragraph">What's your name? </p><input   class="nameInputBox" type="text" id="nameBox" value="" maxlength="18" style="display: inherit;">
+			<button  class="startButton" id="start-button">Start</button>
+		</div>
+	</div>
+
+	<input  class="inputAnswerBox" type="number" id="answer" style="display: none;" inputmode="numeric" required	> <!-- ANSWERS INPUT -->
+
+	<div class="buttonsContainer"> <!-- CONTAINER FOR RESTART AND CHECK BUTTONS -->
+		<button  class="restartButton" id="restart-button">Restart</button>
+		<button  class="checkAnswerButton" onclick="checkAnswer()" id="check-button" style="display: none;">Check</button>
+		<button  class="downloadData" onclick="downloadCSV()" id="download-data" style="display: none;">Download Data</button>
+	</div>
+
+	<p  class="resultParagaph" id="result"></p> <!-- RESULTS OUTPUT -->
+	
+	<table class="answerOutputTable" id="ansTable" style="display: none;"> <!-- TABLE FOR ANSWERS -->
+		<tr   class="answerOutputTableRowParent">
+			<th class="rowTitle">Question</th>
+			<th class="rowTitle">Answer</th>
+			<th class="rowTitle">Result</th>
+			<th class="rowTitle">Time (s)</th>
+		</tr>
+	</table>
+	<p class="footerCaption" id="footer-caption-paragraph">© 2023 Martin Gama</p>
+	</div>
+    <!-- USUALLY, the <script></script> is in the <head></head> of the page, but it's here and I'm too afraid to move it lol -->
+	<script>
+		// In this iteration of the script you can
+		// Enter your name before starting & it stores that Name value.
+		// Have an data file of CSV be output.
+		// Have the name of the CSV default to the name entered at the Start.
+		// "Enter" is a valid event to submit answers instead of only having to click to submit answers.
+
+		//[F] ENTER TO START
+		const inputFieldStart = document.getElementById("nameBox");
+		// Add an event listener for when the "Enter" key is pressed
+		inputFieldStart.addEventListener("keydown", function(event) {
+		if (event.key === "Enter") {
+			// Prevent the default action of submitting the form
+			event.preventDefault();
+		document.getElementById("start-button").style.display = "none"; // hide the start button
+		document.getElementById("question").style.display = "block"; // show the question and answer input fields
+		startGame(); // start the game
+		}});
+
+		// [F] ENTER TO PROCESS ANSWER
+		const inputField = document.getElementById("answer"); // Get the input field element
+		inputField.addEventListener("keydown", function(event) { // Add an event listener for when the "Enter" key is pressed
+		if (event.key === "Enter") {
+			event.preventDefault(); // Prevent the default action of submitting the form
+			checkAnswer(); // Call the function that checks the answer
+		}
+		});
+		// [F] RESTART/REFRESH GAME/PAGE 
+		document.getElementById("restart-button").addEventListener("click", restartPage);
+		function restartPage() {
+			location.reload();
+		}
+		// [F] START GAME PROCESS (AFTER BEING CALLED)
+		function startGame() {
+		document.getElementById("caption-paragraph").style.display = "none";
+		document.getElementById("start-button").style.display = "none"; // hide the start button once the game begins
+		document.getElementById("name-paragraph").style.display = "none"; // hide the "What is your name?"
+		document.getElementById("nameBox").style.display = "none"; // hide's the name box because it's value (usr's name) is stored nnd not needed during the game
+		document.getElementById("answer").style.display = "block"; // show the answer input field
+		document.getElementById("check-button").style.display = "block"; // show the check button
+		document.getElementById("restart-button").style.display = "block";
+		document.getElementById("ansTable").style.display = "inherit"; // shows the table of answers with titles
+		displayQuestion(); // display the first question
+		document.getElementById("answer").focus(); // set focus on the answer input field
+		}
+
+		document.getElementById("question").style.display = "none"; // hide the question and answer input fields initially
+		document.getElementById("answer").style.display = "none"; // hide the answer input field initially
+		document.getElementById("check-button").style.display = "none"; // hide the check button initially
+		document.getElementById("restart-button").style.display = "none"; // hide the restart button initially
+
+		document.getElementById("start-button").addEventListener("click", function() {
+		document.getElementById("start-button").style.display = "none"; // hide the start button
+		document.getElementById("question").style.display = "block"; // show the question and answer input fields
+		startGame(); // start the game
+		});
+		
+		
+		function downloadCSV() { 
+        // this callable function is to prompt the download for attempt date in CSV format
+        // the name formate is "YEAR-MONTH-DATE_NAME.csv"
+        // This includes only the data in the attempt table, i.e. Question, Result, Answer, Time. 
+		let csv = 'Question,Answer,Result,Time(s)\n';
+		let table = document.querySelector("table");
+
+		for (let i = 1; i < table.rows.length; i++) {
+			let question = table.rows[i].cells[0].innerHTML;
+			let answer = table.rows[i].cells[1].innerHTML;
+			let result = table.rows[i].cells[2].innerHTML;
+			let time = table.rows[i].cells[3].innerHTML;
+
+			csv += question + ',' + answer + ',' + result + ',' + time + '\n';
+		}
+			let today = new Date();
+			let year = today.getFullYear();
+			let month = today.getMonth() + 1;
+			let day = today.getDate();
+			// Pad the month and day with leading zeroes if necessary
+			if (month < 10) {
+				month = '0' + month;
+			}
+			if (day < 10) {
+				day = '0' + day;
+			}
+			// Pad the month and day with leading zeroes if necessary
+			let date = year + '-' + month + '-' + day; //new
+			let nameBoxValue = document.getElementById('nameBox').value;
+				nameBoxValue = nameBoxValue.replace(/\s+/g, '_');
+			let csvBlob = new Blob([csv], { type: 'text/csv' });
+			let downloadLink = document.createElement('a');
+			downloadLink.download = nameBoxValue.toString() + "_" + date + '.csv'; // Fix here addded "date + "
+			downloadLink.href = URL.createObjectURL(csvBlob);
+			downloadLink.style.display = 'none';
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+		}
+
+		let combinations = [];
+		for (let i = 0; i <= 12; i++) {
+			for (let j = i; j <= 12; j++) {
+				combinations.push([i, j]);
+			}
+		}
+
+		for (let i = combinations.length - 1; i > 0; i--) {
+			let j = Math.floor(Math.random() * (i + 1));
+			[combinations[i], combinations[j]] = [combinations[j], combinations[i]];
+		}
+
+		let currentCombination = 0;
+		let startTime;
+
+		function displayQuestion() {
+			startTime = new Date();
+			document.getElementById("question").innerHTML = combinations[currentCombination][0] + " + " + combinations[currentCombination][1] + " = ";
+		}
+
+		function checkAnswer() {
+			let userAnswer = document.getElementById("answer").value;
+			let endTime = new Date();
+			let timeTaken = (endTime - startTime) / 1000;
+			let result = "";
+
+			if (userAnswer == combinations[currentCombination][0] + combinations[currentCombination][1]) {
+				result = "Correct!";
+			} else {
+				result = "Incorrect. The correct answer is " + (combinations[currentCombination][0] + combinations[currentCombination][1]) + ".";
+			}
+
+			let table = document.querySelector("table");
+			let row = table.insertRow();
+			let questionCell = row.insertCell(0);
+			let answerCell = row.insertCell(1);
+			let resultCell = row.insertCell(2);
+			let timeCell = row.insertCell(3);
+
+			questionCell.innerHTML = combinations[currentCombination][0] + " + " + combinations[currentCombination][1];
+                questionCell.classList.add("questionCellOutput");
+            answerCell.innerHTML = userAnswer;
+                answerCell.classList.add("answerCellOutput");
+            resultCell.innerHTML = result;
+                resultCell.classList.add("resultCellOutput");
+			timeCell.innerHTML = timeTaken.toFixed(2);
+                timeCell.classList.add("timeCellOutput");
+
+
+			currentCombination++;
+			if (currentCombination < combinations.length) {
+				displayQuestion();
+				document.getElementById("answer").value = "";
+				document.getElementById("answer").focus();
+			} else {
+				let totalTime = 0;
+				for (let i = 1; i < table.rows.length; i++) {
+				totalTime += parseFloat(table.rows[i].cells[3].innerHTML);
+				}
+				document.getElementById("question").innerHTML = ""
+				document.getElementById("question").innerHTML = "Game over! Total time: " + totalTime.toFixed(2) + "s.";
+				document.getElementById("answer").style.display = "none";
+				document.getElementById("check-button").style.display = "none";	
+				document.getElementById("restart-button").style.display = "block";
+				document.getElementById("download-data").style.display = "block";
+				document.getElementsByTagName("button")[0].style.display = "none";
+
+				downloadCSV();
+			}
+		}
+
+		displayQuestion();
+		document.getElementById("answer").focus();
+	</script>
+</body>
+</html>
